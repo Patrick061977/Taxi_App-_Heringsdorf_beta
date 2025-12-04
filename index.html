@@ -17,14 +17,15 @@
     
     <!-- 📋 VERSION INFO -->
     <script>
-        console.log('🚕 Funk Taxi App v5.37.4-BETA-KOMPLETT - Build 20251204-1535');
-        console.log('🎯 ÖPNV-TAXI KOMPAKT - GANZ USEDOM!');
+        console.log('🚕 Funk Taxi App v5.37.5-DEMO - Build 20251204-1545');
+        console.log('🎯 ÖPNV-TAXI DEMO - OHNE LOGIN!');
         console.log('🏖️ Küste: Heringsdorf, Ahlbeck, Bansin');
         console.log('🚜 Hinterland: Neppermin, Benz, Garz, Kamminke...');
         console.log('👨‍👩‍👧‍👦 Mit Personen & Kindern!');
         console.log('💰 Zuschlag: Erwachsene 2€, Kinder 1€!');
         console.log('🎫 ÖPNV-Tarife + Kinder-Ermäßigung!');
-        console.log('💡 Eine Demo für alle Gemeinden!');
+        console.log('🔓 KEIN LOGIN - Direkt Demo zeigen!');
+        console.log('💡 Perfekt für Gemeinde-Präsentation!');
         console.log('');
         console.log('🆕 FEATURES:');
         console.log('✅ 18 Haltestellen (Küste + Hinterland)');
@@ -33,6 +34,7 @@
         console.log('✅ Kinder-Zuschlag nur 1€!');
         console.log('✅ Automatische Gruppen-Preise');
         console.log('✅ Live-Busfahrplan');
+        console.log('✅ OHNE LOGIN - Sofort nutzbar!');
     </script>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -5148,6 +5150,13 @@
             
             updateStatus();
             updateViews(); // WICHTIG: Views auch ohne Firebase laden!
+            
+            // 🎯 DEMO-MODUS: Direkt zur Hauptansicht ohne Login!
+            console.log('🎯 DEMO-MODUS: Zeige Hauptansicht automatisch');
+            setTimeout(() => {
+                showSection('taxi-buchen');
+                console.log('✅ Demo-Hauptansicht geladen');
+            }, 500);
             
             // 🔔 SERVICE WORKER DEAKTIVIERT - Telegram übernimmt Benachrichtigungen!
             // initServiceWorker();
@@ -20183,24 +20192,9 @@ Stack: ${err.stack}
         }
         
         function onUserLoggedOut() {
-            // 🆕 v5.21.0: Stack Trace um zu sehen WOHER der Logout kommt
-            console.log('👤 onUserLoggedOut aufgerufen');
-            console.trace('📍 Logout Stack Trace:');
+            // 🎯 DEMO-MODUS: Kein Login nötig!
+            console.log('🎯 DEMO-MODUS: Zeige Hauptansicht ohne Login');
             
-            // 📜 PROTOKOLL: Logout (vor dem Zurücksetzen!)
-            if (currentUser) {
-                logActivity('system', 'logout', `🔐 Logout: ${currentUser.email}`, {
-                    email: currentUser.email,
-                    reason: 'auth_state_changed'
-                });
-            } else {
-                // User war schon null - unerwarteter Logout!
-                logActivity('system', 'logout', `⚠️ Unerwarteter Logout (User war bereits null)`, {
-                    reason: 'unexpected'
-                });
-            }
-            
-            console.log('👤 User ausgeloggt');
             currentUser = null;
             userRole = 'fahrgast';
             myProfileData = null;
@@ -20209,10 +20203,14 @@ Stack: ${err.stack}
             const profileBox = document.getElementById('my-profile-box');
             if (profileBox) profileBox.style.display = 'none';
             
-            // 🔐 Nur Fahrgast-Tab für nicht eingeloggte User
-            applyRoleRestrictions(null); // null = nicht eingeloggt
+            // 🔓 Fahrgast-Ansicht ohne Login zeigen
+            applyRoleRestrictions(null);
             
             updateUserProfile();
+            
+            // 🎯 DEMO: Direkt zur Hauptansicht (Taxi buchen)
+            console.log('🎯 Zeige Hauptansicht für Demo');
+            showSection('taxi-buchen');
         }
         
         function updateUserProfile() {
