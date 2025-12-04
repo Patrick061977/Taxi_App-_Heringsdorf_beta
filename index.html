@@ -17,24 +17,26 @@
     
     <!-- 📋 VERSION INFO -->
     <script>
-        console.log('🚕 Funk Taxi App v5.37.5-DEMO - Build 20251204-1545');
-        console.log('🎯 ÖPNV-TAXI DEMO - OHNE LOGIN!');
+        console.log('🚕 Funk Taxi App v5.37.7 - Build 20251204-1710');
+        console.log('🎯 ÖPNV-TAXI - Ganz Usedom!');
+        console.log('🔓 KOMPLETT OHNE LOGIN!');
         console.log('🏖️ Küste: Heringsdorf, Ahlbeck, Bansin');
         console.log('🚜 Hinterland: Neppermin, Benz, Garz, Kamminke...');
         console.log('👨‍👩‍👧‍👦 Mit Personen & Kindern!');
         console.log('💰 Zuschlag: Erwachsene 2€, Kinder 1€!');
         console.log('🎫 ÖPNV-Tarife + Kinder-Ermäßigung!');
-        console.log('🔓 KEIN LOGIN - Direkt Demo zeigen!');
-        console.log('💡 Perfekt für Gemeinde-Präsentation!');
         console.log('');
-        console.log('🆕 FEATURES:');
+        console.log('🆕 NEU IN v5.37.7:');
+        console.log('✅ Login KOMPLETT entfernt!');
+        console.log('✅ Keine Anmeldung mehr nötig!');
+        console.log('✅ Sofort nutzbar für alle!');
+        console.log('');
         console.log('✅ 18 Haltestellen (Küste + Hinterland)');
         console.log('✅ Erwachsene & Kinder wählbar');
         console.log('✅ Kinder-Ermäßigung 50%');
         console.log('✅ Kinder-Zuschlag nur 1€!');
         console.log('✅ Automatische Gruppen-Preise');
         console.log('✅ Live-Busfahrplan');
-        console.log('✅ OHNE LOGIN - Sofort nutzbar!');
     </script>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -524,110 +526,6 @@
     <!-- 🔔 PUSH DEAKTIVIERT - Telegram übernimmt! -->
 
     <!-- 🆕 v5.26.0: TELEFON-REGISTRIERUNG / LOGIN SCREEN -->
-    <div id="phone-auth-screen" style="
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        z-index: 10000;
-        padding: 20px;
-        overflow-y: auto;
-    ">
-        <div style="max-width: 400px; margin: 40px auto;">
-            <!-- Logo & Titel -->
-            <div style="text-align: center; margin-bottom: 30px;">
-                <div style="font-size: 64px; margin-bottom: 10px;">🚕</div>
-                <h1 style="color: white; font-size: 24px; margin-bottom: 5px;">Funk Taxi Heringsdorf</h1>
-                <p style="color: rgba(255,255,255,0.8); font-size: 14px;">Anmelden um Taxi zu buchen</p>
-            </div>
-            
-            <!-- SCHRITT 1: Telefonnummer eingeben -->
-            <div id="phone-step-1" style="background: white; border-radius: 16px; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
-                <h3 style="margin: 0 0 20px 0; font-size: 18px; text-align: center;">📱 Telefonnummer eingeben</h3>
-                
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; font-size: 13px; color: #666; margin-bottom: 5px;">Deine Handynummer</label>
-                    <div style="display: flex; gap: 8px;">
-                        <select id="phone-country-code" style="padding: 14px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; width: 90px;">
-                            <option value="+49">🇩🇪 +49</option>
-                            <option value="+43">🇦🇹 +43</option>
-                            <option value="+41">🇨🇭 +41</option>
-                            <option value="+48">🇵🇱 +48</option>
-                        </select>
-                        <input type="tel" id="phone-number-input" placeholder="173 1234567" 
-                            style="flex: 1; padding: 14px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px;"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                    </div>
-                </div>
-                
-                <!-- reCAPTCHA Container -->
-                <div id="recaptcha-container" style="margin-bottom: 15px;"></div>
-                
-                <!-- Primärer Button: Prüft ob Kunde bekannt ist -->
-                <button onclick="checkAndLogin()" id="check-login-btn" style="
-                    width: 100%;
-                    padding: 16px;
-                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-                    color: white;
-                    border: none;
-                    border-radius: 10px;
-                    font-size: 16px;
-                    font-weight: 700;
-                    cursor: pointer;
-                    margin-bottom: 10px;
-                ">
-                    🔓 Anmelden
-                </button>
-                
-                <p style="text-align: center; font-size: 12px; color: #999; margin-top: 10px;">
-                    Noch nicht registriert? Beim ersten Mal erhältst du einen SMS-Code.
-                </p>
-            </div>
-            
-            <!-- SCHRITT 2: Code eingeben (anfangs versteckt) -->
-            <div id="phone-step-2" style="display: none; background: white; border-radius: 16px; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
-                <h3 style="margin: 0 0 10px 0; font-size: 18px; text-align: center;">✅ Code eingeben</h3>
-                <p id="phone-sent-to" style="text-align: center; font-size: 13px; color: #666; margin-bottom: 20px;"></p>
-                
-                <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 20px;">
-                    <input type="text" id="code-1" maxlength="1" class="code-input" style="width: 45px; height: 55px; text-align: center; font-size: 24px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code-2')">
-                    <input type="text" id="code-2" maxlength="1" class="code-input" style="width: 45px; height: 55px; text-align: center; font-size: 24px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code-3')">
-                    <input type="text" id="code-3" maxlength="1" class="code-input" style="width: 45px; height: 55px; text-align: center; font-size: 24px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code-4')">
-                    <input type="text" id="code-4" maxlength="1" class="code-input" style="width: 45px; height: 55px; text-align: center; font-size: 24px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code-5')">
-                    <input type="text" id="code-5" maxlength="1" class="code-input" style="width: 45px; height: 55px; text-align: center; font-size: 24px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="moveToNext(this, 'code-6')">
-                    <input type="text" id="code-6" maxlength="1" class="code-input" style="width: 45px; height: 55px; text-align: center; font-size: 24px; font-weight: bold; border: 2px solid #e5e7eb; border-radius: 8px;" oninput="verifyCodeAuto()">
-                </div>
-                
-                <button onclick="verifyCode()" id="verify-code-btn" style="
-                    width: 100%;
-                    padding: 16px;
-                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-                    color: white;
-                    border: none;
-                    border-radius: 10px;
-                    font-size: 16px;
-                    font-weight: 700;
-                    cursor: pointer;
-                ">
-                    ✅ Bestätigen
-                </button>
-                
-                <div style="text-align: center; margin-top: 15px;">
-                    <button onclick="goBackToPhone()" style="background: none; border: none; color: #667eea; font-size: 13px; cursor: pointer;">
-                        ← Andere Nummer verwenden
-                    </button>
-                </div>
-                
-                <div id="resend-timer" style="text-align: center; font-size: 12px; color: #999; margin-top: 10px;"></div>
-            </div>
-            
-            <!-- Error Message -->
-            <div id="phone-auth-error" style="display: none; background: #fef2f2; color: #dc2626; padding: 12px; border-radius: 8px; margin-top: 15px; text-align: center; font-size: 14px;"></div>
-        </div>
-    </div>
 
     <!-- 📱 MENÜ OVERLAY -->
     <div id="menu-overlay" style="
