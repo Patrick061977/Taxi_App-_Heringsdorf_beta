@@ -17,19 +17,20 @@
     
     <!-- 📋 VERSION INFO -->
     <script>
-        console.log('🚕 Funk Taxi App v5.37.0-BETA - Build 20251204-1330');
-        console.log('🚌 ÖPNV-TAXI BETA VERSION!');
-        console.log('📍 Live-Busfahrplan Integration!');
+        console.log('🚕 Funk Taxi App v5.37.1-BETA-HINTERLAND - Build 20251204-1500');
+        console.log('🚜 ÖPNV-TAXI HINTERLAND BETA!');
+        console.log('🏘️ Für die ländlichen Gebiete von Usedom!');
+        console.log('📍 Neppermin, Benz, Mellenthin, Garz & mehr!');
         console.log('🎫 ÖPNV-Tarife (Busticket + 2€)!');
-        console.log('🚏 Haltestellen-System!');
-        console.log('💡 Demo für Präsentation!');
+        console.log('🚏 Hinterland-Haltestellen-System!');
+        console.log('💡 Demo für Gemeinden im Hinterland!');
         console.log('');
         console.log('🆕 FEATURES:');
         console.log('✅ Live-Busfahrplan anzeigen');
-        console.log('✅ ÖPNV-Taxi wenn kein Bus verfügbar');
-        console.log('✅ Haltestellen-Auswahl');
+        console.log('✅ ÖPNV-Taxi für Hinterland-Orte');
+        console.log('✅ 10 Haltestellen im Hinterland');
         console.log('✅ Automatische Tarif-Berechnung');
-        console.log('✅ Demo-Modus für Gemeinde');
+        console.log('✅ Demo-Modus für Hinterland-Gemeinden');
     </script>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -1017,11 +1018,11 @@
             <div style="background:rgba(255,255,255,0.2);padding:15px;border-radius:8px;margin-bottom:15px;">
                 <div style="font-weight:600;margin-bottom:8px;">💰 Preisbeispiel:</div>
                 <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px;">
-                    <span>Bahnhof → Ahlbeck (7km)</span>
+                    <span>Benz → Garz (5km)</span>
                 </div>
                 <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px;opacity:0.9;">
                     <span>Normales Taxi:</span>
-                    <strong>18,00€</strong>
+                    <strong>16,00€</strong>
                 </div>
                 <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin-top:8px;padding-top:8px;border-top:2px solid rgba(255,255,255,0.3);">
                     <span>ÖPNV-Taxi:</span>
@@ -22549,14 +22550,16 @@ Stack: ${err.stack}
     <script>
         // ÖPNV-Taxi Haltestellen (Demo-Daten für Heringsdorf/Usedom)
         const OEPNV_HALTESTELLEN = [
-            { id: 'hgw_bhf', name: 'Bahnhof Heringsdorf', lat: 53.9524, lon: 14.1624 },
-            { id: 'ahlbeck_ort', name: 'Ahlbeck Ortszentrum', lat: 53.9442, lon: 14.1989 },
-            { id: 'bansin_ort', name: 'Bansin Ortszentrum', lat: 53.9611, lon: 14.1389 },
-            { id: 'heringsdorf_seebruecke', name: 'Heringsdorf Seebrücke', lat: 53.9544, lon: 14.1728 },
-            { id: 'ahlbeck_seebruecke', name: 'Ahlbeck Seebrücke', lat: 53.9422, lon: 14.1972 },
-            { id: 'bansin_seebruecke', name: 'Bansin Seebrücke', lat: 53.9594, lon: 14.1456 },
-            { id: 'heringsdorf_duenenstr', name: 'Heringsdorf Dünenstraße', lat: 53.9534, lon: 14.1658 },
-            { id: 'korswandt', name: 'Korswandt Ortsmitte', lat: 53.9278, lon: 14.1528 }
+            { id: 'neppermin', name: 'Neppermin Ortsmitte', lat: 53.9050, lon: 13.9580 },
+            { id: 'benz', name: 'Benz Dorfplatz', lat: 53.9180, lon: 14.0050 },
+            { id: 'mellenthin', name: 'Mellenthin Schloss', lat: 53.9380, lon: 13.9820 },
+            { id: 'garz', name: 'Garz Ortszentrum', lat: 53.8920, lon: 13.9750 },
+            { id: 'kamminke', name: 'Kamminke Hafen', lat: 53.8680, lon: 14.2520 },
+            { id: 'pudagla', name: 'Pudagla Kirche', lat: 53.8850, lon: 14.0320 },
+            { id: 'balm', name: 'Balm Dorfmitte', lat: 53.9120, lon: 14.0450 },
+            { id: 'dewichow', name: 'Dewichow Ortsmitte', lat: 53.9280, lon: 13.9620 },
+            { id: 'katschow', name: 'Katschow Dorfplatz', lat: 53.9020, lon: 14.0580 },
+            { id: 'stolpe', name: 'Stolpe Ortszentrum', lat: 53.9180, lon: 14.0820 }
         ];
 
         // ÖPNV-Tarife (Busticket + 2€)
