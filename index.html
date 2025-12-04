@@ -17,11 +17,12 @@
     
     <!-- 📋 VERSION INFO -->
     <script>
-        console.log('🚕 Funk Taxi App v5.37.2-BETA-KOMPLETT - Build 20251204-1520');
+        console.log('🚕 Funk Taxi App v5.37.4-BETA-KOMPLETT - Build 20251204-1535');
         console.log('🎯 ÖPNV-TAXI KOMPAKT - GANZ USEDOM!');
         console.log('🏖️ Küste: Heringsdorf, Ahlbeck, Bansin');
         console.log('🚜 Hinterland: Neppermin, Benz, Garz, Kamminke...');
         console.log('👨‍👩‍👧‍👦 Mit Personen & Kindern!');
+        console.log('💰 Zuschlag: Erwachsene 2€, Kinder 1€!');
         console.log('🎫 ÖPNV-Tarife + Kinder-Ermäßigung!');
         console.log('💡 Eine Demo für alle Gemeinden!');
         console.log('');
@@ -29,6 +30,7 @@
         console.log('✅ 18 Haltestellen (Küste + Hinterland)');
         console.log('✅ Erwachsene & Kinder wählbar');
         console.log('✅ Kinder-Ermäßigung 50%');
+        console.log('✅ Kinder-Zuschlag nur 1€!');
         console.log('✅ Automatische Gruppen-Preise');
         console.log('✅ Live-Busfahrplan');
     </script>
@@ -1029,7 +1031,7 @@
                 </div>
                 <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin-top:8px;padding-top:8px;border-top:2px solid rgba(255,255,255,0.3);">
                     <span>ÖPNV-Taxi:</span>
-                    <span style="background:white;color:#059669;padding:4px 12px;border-radius:6px;">nur 14,00€</span>
+                    <span style="background:white;color:#059669;padding:4px 12px;border-radius:6px;">nur 15,00€</span>
                 </div>
             </div>
             
@@ -22583,7 +22585,8 @@ Stack: ${err.stack}
             'insel': { maxKm: 999, busPreis: 6.00, name: 'Insel-Ticket' }
         };
         
-        const OEPNV_ZUSCHLAG = 2.00; // Zuschlag zum Busticket
+        const OEPNV_ZUSCHLAG = 2.00; // Zuschlag zum Busticket (Erwachsene)
+        const OEPNV_ZUSCHLAG_KINDER = 1.00; // Zuschlag für Kinder (unter 18 Jahre)
 
         // Berechne Distanz zwischen zwei Haltestellen
         function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -22624,7 +22627,7 @@ Stack: ${err.stack}
             // Preis für Kinder (50% Ermäßigung auf Busticket)
             const childBusPrice = busPrice * 0.5;
             const childBusTotal = childBusPrice * children;
-            const childZuschlagTotal = OEPNV_ZUSCHLAG * children;
+            const childZuschlagTotal = OEPNV_ZUSCHLAG_KINDER * children; // Kinder nur 1€!
             
             // Gesamt
             const totalBus = adultBusTotal + childBusTotal;
@@ -22732,10 +22735,11 @@ Stack: ${err.stack}
                                 <div style="font-weight:600;color:#065f46;margin-bottom:8px;">💡 So funktioniert's:</div>
                                 <div style="font-size:13px;color:#065f46;line-height:1.6;">
                                     1️⃣ Kunde bucht von Haltestelle zu Haltestelle<br>
-                                    2️⃣ Zahlt nur Busticket + 2€ Aufpreis pro Person<br>
-                                    3️⃣ Kinder erhalten 50% Ermäßigung auf Busticket<br>
-                                    4️⃣ Gemeinde zahlt Differenz zum Taxi-Tarif<br>
-                                    5️⃣ Riesige Ersparnis für alle Beteiligten!
+                                    2️⃣ Zahlt Busticket + Zuschlag pro Person<br>
+                                    3️⃣ Erwachsene: 2€ Zuschlag • Kinder: 1€ Zuschlag<br>
+                                    4️⃣ Kinder erhalten 50% Ermäßigung auf Busticket<br>
+                                    5️⃣ Gemeinde zahlt Differenz zum Taxi-Tarif<br>
+                                    6️⃣ Riesige Ersparnis für alle Beteiligten!
                                 </div>
                             </div>
                         </div>
@@ -22827,8 +22831,8 @@ Stack: ${err.stack}
                                 <span style="font-weight:600;">${price.childBusTotal}€</span>
                             </div>
                             <div style="display:flex;justify-content:space-between;font-size:14px;color:#374151;">
-                                <span>➕ Zuschlag (2€ × ${children}):</span>
-                                <span style="font-weight:600;">${(children * 2).toFixed(2)}€</span>
+                                <span>➕ Zuschlag (1€ × ${children}):</span>
+                                <span style="font-weight:600;">${(children * 1).toFixed(2)}€</span>
                             </div>
                         </div>
                         ` : ''}
