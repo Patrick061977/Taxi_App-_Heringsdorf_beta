@@ -17,20 +17,20 @@
     
     <!-- 📋 VERSION INFO -->
     <script>
-        console.log('🚕 Funk Taxi App v5.37.1-BETA-HINTERLAND - Build 20251204-1500');
-        console.log('🚜 ÖPNV-TAXI HINTERLAND BETA!');
-        console.log('🏘️ Für die ländlichen Gebiete von Usedom!');
-        console.log('📍 Neppermin, Benz, Mellenthin, Garz & mehr!');
-        console.log('🎫 ÖPNV-Tarife (Busticket + 2€)!');
-        console.log('🚏 Hinterland-Haltestellen-System!');
-        console.log('💡 Demo für Gemeinden im Hinterland!');
+        console.log('🚕 Funk Taxi App v5.37.2-BETA-KOMPLETT - Build 20251204-1520');
+        console.log('🎯 ÖPNV-TAXI KOMPAKT - GANZ USEDOM!');
+        console.log('🏖️ Küste: Heringsdorf, Ahlbeck, Bansin');
+        console.log('🚜 Hinterland: Neppermin, Benz, Garz, Kamminke...');
+        console.log('👨‍👩‍👧‍👦 Mit Personen & Kindern!');
+        console.log('🎫 ÖPNV-Tarife + Kinder-Ermäßigung!');
+        console.log('💡 Eine Demo für alle Gemeinden!');
         console.log('');
         console.log('🆕 FEATURES:');
-        console.log('✅ Live-Busfahrplan anzeigen');
-        console.log('✅ ÖPNV-Taxi für Hinterland-Orte');
-        console.log('✅ 10 Haltestellen im Hinterland');
-        console.log('✅ Automatische Tarif-Berechnung');
-        console.log('✅ Demo-Modus für Hinterland-Gemeinden');
+        console.log('✅ 18 Haltestellen (Küste + Hinterland)');
+        console.log('✅ Erwachsene & Kinder wählbar');
+        console.log('✅ Kinder-Ermäßigung 50%');
+        console.log('✅ Automatische Gruppen-Preise');
+        console.log('✅ Live-Busfahrplan');
     </script>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -1017,16 +1017,19 @@
             <!-- Preisbeispiel -->
             <div style="background:rgba(255,255,255,0.2);padding:15px;border-radius:8px;margin-bottom:15px;">
                 <div style="font-weight:600;margin-bottom:8px;">💰 Preisbeispiel:</div>
-                <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px;">
-                    <span>Benz → Garz (5km)</span>
+                <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:3px;">
+                    <span>Familie (2 Erw. + 2 Kinder)</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px;opacity:0.9;">
+                    <span>Bahnhof → Ahlbeck (7km)</span>
                 </div>
                 <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px;opacity:0.9;">
                     <span>Normales Taxi:</span>
-                    <strong>16,00€</strong>
+                    <strong>~20,00€</strong>
                 </div>
                 <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin-top:8px;padding-top:8px;border-top:2px solid rgba(255,255,255,0.3);">
                     <span>ÖPNV-Taxi:</span>
-                    <span style="background:white;color:#059669;padding:4px 12px;border-radius:6px;">nur 5,00€</span>
+                    <span style="background:white;color:#059669;padding:4px 12px;border-radius:6px;">nur 14,00€</span>
                 </div>
             </div>
             
@@ -22550,6 +22553,16 @@ Stack: ${err.stack}
     <script>
         // ÖPNV-Taxi Haltestellen (Demo-Daten für Heringsdorf/Usedom)
         const OEPNV_HALTESTELLEN = [
+            // KÜSTE (8 Haltestellen)
+            { id: 'hgw_bhf', name: 'Bahnhof Heringsdorf', lat: 53.9524, lon: 14.1624 },
+            { id: 'ahlbeck_ort', name: 'Ahlbeck Ortszentrum', lat: 53.9442, lon: 14.1989 },
+            { id: 'bansin_ort', name: 'Bansin Ortszentrum', lat: 53.9611, lon: 14.1389 },
+            { id: 'heringsdorf_seebruecke', name: 'Heringsdorf Seebrücke', lat: 53.9544, lon: 14.1728 },
+            { id: 'ahlbeck_seebruecke', name: 'Ahlbeck Seebrücke', lat: 53.9422, lon: 14.1972 },
+            { id: 'bansin_seebruecke', name: 'Bansin Seebrücke', lat: 53.9594, lon: 14.1456 },
+            { id: 'heringsdorf_duenenstr', name: 'Heringsdorf Dünenstraße', lat: 53.9534, lon: 14.1658 },
+            { id: 'korswandt', name: 'Korswandt Ortsmitte', lat: 53.9278, lon: 14.1528 },
+            // HINTERLAND (10 Haltestellen)
             { id: 'neppermin', name: 'Neppermin Ortsmitte', lat: 53.9050, lon: 13.9580 },
             { id: 'benz', name: 'Benz Dorfplatz', lat: 53.9180, lon: 14.0050 },
             { id: 'mellenthin', name: 'Mellenthin Schloss', lat: 53.9380, lon: 13.9820 },
@@ -22585,7 +22598,7 @@ Stack: ${err.stack}
         }
 
         // Berechne ÖPNV-Tarif
-        function calculateOEPNVPrice(fromStop, toStop) {
+        function calculateOEPNVPrice(fromStop, toStop, adults = 1, children = 0) {
             const from = OEPNV_HALTESTELLEN.find(h => h.id === fromStop);
             const to = OEPNV_HALTESTELLEN.find(h => h.id === toStop);
             
@@ -22603,15 +22616,41 @@ Stack: ${err.stack}
             
             if (!tarif) tarif = OEPNV_TARIFE.insel;
             
+            // Preis für Erwachsene
             const busPrice = tarif.busPreis;
-            const totalPrice = busPrice + OEPNV_ZUSCHLAG;
+            const adultBusTotal = busPrice * adults;
+            const adultZuschlagTotal = OEPNV_ZUSCHLAG * adults;
+            
+            // Preis für Kinder (50% Ermäßigung auf Busticket)
+            const childBusPrice = busPrice * 0.5;
+            const childBusTotal = childBusPrice * children;
+            const childZuschlagTotal = OEPNV_ZUSCHLAG * children;
+            
+            // Gesamt
+            const totalBus = adultBusTotal + childBusTotal;
+            const totalZuschlag = adultZuschlagTotal + childZuschlagTotal;
+            const totalPrice = totalBus + totalZuschlag;
+            
+            // Normal-Taxi Preis (grob geschätzt: 3€ Grundpreis + 2€/km)
+            const normalTaxiPrice = 3.00 + (distance * 2.0);
+            const totalPersons = adults + children;
             
             return {
                 distance: distance.toFixed(1),
                 tarifName: tarif.name,
                 busPrice: busPrice.toFixed(2),
+                childBusPrice: childBusPrice.toFixed(2),
+                adults: adults,
+                children: children,
+                totalPersons: totalPersons,
+                adultBusTotal: adultBusTotal.toFixed(2),
+                childBusTotal: childBusTotal.toFixed(2),
+                totalBus: totalBus.toFixed(2),
+                totalZuschlag: totalZuschlag.toFixed(2),
                 totalPrice: totalPrice.toFixed(2),
-                savings: (18.00 - totalPrice).toFixed(2) // vs. normales Taxi
+                normalTaxiPrice: normalTaxiPrice.toFixed(2),
+                savings: (normalTaxiPrice - totalPrice).toFixed(2),
+                savingsPercent: (((normalTaxiPrice - totalPrice) / normalTaxiPrice) * 100).toFixed(0)
             };
         }
 
@@ -22632,7 +22671,37 @@ Stack: ${err.stack}
                         </div>
 
                         <div style="padding:25px;">
-                            <!-- Schritt 1: Haltestelle wählen -->
+                            <!-- Schritt 1: Personen -->
+                            <div style="margin-bottom:25px;">
+                                <label style="display:block;font-weight:600;margin-bottom:10px;color:#1f2937;">
+                                    👨‍👩‍👧‍👦 Wie viele Personen?
+                                </label>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+                                    <div>
+                                        <label style="display:block;font-size:14px;color:#6b7280;margin-bottom:8px;">👨 Erwachsene</label>
+                                        <select id="demo-adults" onchange="updateOEPNVDemo()" style="width:100%;padding:14px;border:2px solid #e5e7eb;border-radius:8px;font-size:15px;">
+                                            <option value="1">1 Person</option>
+                                            <option value="2">2 Personen</option>
+                                            <option value="3">3 Personen</option>
+                                            <option value="4">4 Personen</option>
+                                            <option value="5">5 Personen</option>
+                                            <option value="6">6 Personen</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="display:block;font-size:14px;color:#6b7280;margin-bottom:8px;">👶 Kinder (-50%)</label>
+                                        <select id="demo-children" onchange="updateOEPNVDemo()" style="width:100%;padding:14px;border:2px solid #e5e7eb;border-radius:8px;font-size:15px;">
+                                            <option value="0">0 Kinder</option>
+                                            <option value="1">1 Kind</option>
+                                            <option value="2">2 Kinder</option>
+                                            <option value="3">3 Kinder</option>
+                                            <option value="4">4 Kinder</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Schritt 2: Haltestelle wählen -->
                             <div style="margin-bottom:25px;">
                                 <label style="display:block;font-weight:600;margin-bottom:10px;color:#1f2937;">
                                     📍 Von welcher Haltestelle?
@@ -22663,9 +22732,10 @@ Stack: ${err.stack}
                                 <div style="font-weight:600;color:#065f46;margin-bottom:8px;">💡 So funktioniert's:</div>
                                 <div style="font-size:13px;color:#065f46;line-height:1.6;">
                                     1️⃣ Kunde bucht von Haltestelle zu Haltestelle<br>
-                                    2️⃣ Zahlt nur Busticket + 2€ Aufpreis<br>
-                                    3️⃣ Gemeinde zahlt Differenz zum Taxi-Tarif<br>
-                                    4️⃣ Riesige Ersparnis für alle Beteiligten!
+                                    2️⃣ Zahlt nur Busticket + 2€ Aufpreis pro Person<br>
+                                    3️⃣ Kinder erhalten 50% Ermäßigung auf Busticket<br>
+                                    4️⃣ Gemeinde zahlt Differenz zum Taxi-Tarif<br>
+                                    5️⃣ Riesige Ersparnis für alle Beteiligten!
                                 </div>
                             </div>
                         </div>
@@ -22678,6 +22748,8 @@ Stack: ${err.stack}
 
         // Update Demo bei Haltestellen-Auswahl
         function updateOEPNVDemo() {
+            const adults = parseInt(document.getElementById('demo-adults')?.value || 1);
+            const children = parseInt(document.getElementById('demo-children')?.value || 0);
             const fromStop = document.getElementById('demo-from-stop').value;
             const toStop = document.getElementById('demo-to-stop').value;
             const resultDiv = document.getElementById('demo-result');
@@ -22697,16 +22769,29 @@ Stack: ${err.stack}
                 return;
             }
             
-            const price = calculateOEPNVPrice(fromStop, toStop);
+            const price = calculateOEPNVPrice(fromStop, toStop, adults, children);
             if (!price) return;
             
             const fromName = OEPNV_HALTESTELLEN.find(h => h.id === fromStop).name;
             const toName = OEPNV_HALTESTELLEN.find(h => h.id === toStop).name;
             
+            // Personen-Text
+            let personenText = '';
+            if (adults > 0 && children > 0) {
+                personenText = `${adults} Erwachsene + ${children} ${children === 1 ? 'Kind' : 'Kinder'}`;
+            } else if (adults > 0) {
+                personenText = `${adults} ${adults === 1 ? 'Erwachsener' : 'Erwachsene'}`;
+            } else if (children > 0) {
+                personenText = `${children} ${children === 1 ? 'Kind' : 'Kinder'}`;
+            }
+            
             resultDiv.innerHTML = `
                 <div style="background:linear-gradient(135deg, #f0fdf4 0%, #d1fae5 100%);border:3px solid #10b981;padding:20px;border-radius:12px;">
-                    <!-- Route -->
+                    <!-- Personen & Route -->
                     <div style="margin-bottom:20px;">
+                        <div style="font-size:16px;font-weight:600;color:#065f46;margin-bottom:10px;">
+                            👨‍👩‍👧‍👦 ${personenText}
+                        </div>
                         <div style="font-size:13px;color:#065f46;margin-bottom:8px;">📍 Route:</div>
                         <div style="font-weight:600;color:#065f46;font-size:15px;">
                             ${fromName}<br>
@@ -22720,17 +22805,37 @@ Stack: ${err.stack}
 
                     <!-- Preise -->
                     <div style="background:white;padding:15px;border-radius:8px;margin-bottom:15px;">
-                        <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px;color:#374151;">
-                            <span>🎫 Busticket:</span>
-                            <span style="font-weight:600;">${price.busPrice}€</span>
+                        ${adults > 0 ? `
+                        <div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #e5e7eb;">
+                            <div style="font-weight:600;color:#1f2937;margin-bottom:8px;">👨 Erwachsene (${adults}x):</div>
+                            <div style="display:flex;justify-content:space-between;font-size:14px;color:#374151;margin-bottom:5px;">
+                                <span>🎫 Busticket (${price.busPrice}€ × ${adults}):</span>
+                                <span style="font-weight:600;">${price.adultBusTotal}€</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;font-size:14px;color:#374151;">
+                                <span>➕ Zuschlag (2€ × ${adults}):</span>
+                                <span style="font-weight:600;">${(adults * 2).toFixed(2)}€</span>
+                            </div>
                         </div>
-                        <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px;color:#374151;">
-                            <span>➕ ÖPNV-Zuschlag:</span>
-                            <span style="font-weight:600;">2,00€</span>
+                        ` : ''}
+                        
+                        ${children > 0 ? `
+                        <div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #e5e7eb;">
+                            <div style="font-weight:600;color:#1f2937;margin-bottom:8px;">👶 Kinder (${children}x) <span style="color:#10b981;">-50%</span>:</div>
+                            <div style="display:flex;justify-content:space-between;font-size:14px;color:#374151;margin-bottom:5px;">
+                                <span>🎫 Busticket (${price.childBusPrice}€ × ${children}):</span>
+                                <span style="font-weight:600;">${price.childBusTotal}€</span>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;font-size:14px;color:#374151;">
+                                <span>➕ Zuschlag (2€ × ${children}):</span>
+                                <span style="font-weight:600;">${(children * 2).toFixed(2)}€</span>
+                            </div>
                         </div>
+                        ` : ''}
+                        
                         <div style="border-top:2px solid #10b981;margin:10px 0;"></div>
                         <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;color:#065f46;">
-                            <span>💰 Du zahlst:</span>
+                            <span>💰 Gesamt (${price.totalPersons} ${price.totalPersons === 1 ? 'Person' : 'Personen'}):</span>
                             <span style="background:#10b981;color:white;padding:6px 15px;border-radius:8px;">${price.totalPrice}€</span>
                         </div>
                     </div>
@@ -22739,17 +22844,18 @@ Stack: ${err.stack}
                     <div style="background:#fef3c7;padding:12px;border-radius:8px;margin-bottom:15px;">
                         <div style="display:flex;justify-content:space-between;font-size:13px;color:#78350f;">
                             <span>Normales Taxi würde kosten:</span>
-                            <span style="font-weight:700;text-decoration:line-through;">~18,00€</span>
+                            <span style="font-weight:700;text-decoration:line-through;">~${price.normalTaxiPrice}€</span>
                         </div>
                         <div style="font-weight:700;color:#059669;margin-top:5px;font-size:14px;">
-                            ✅ Du sparst: ${price.savings}€ (${Math.round((price.savings / 18) * 100)}%)
+                            ✅ Ihr spart: ${price.savings}€ (${price.savingsPercent}%)
                         </div>
                     </div>
 
                     <!-- Gemeinde Info -->
                     <div style="background:#dbeafe;padding:12px;border-radius:8px;font-size:13px;color:#1e40af;">
                         <strong>ℹ️ Für Gemeinde:</strong><br>
-                        Gemeinde zahlt ca. ${(18 - price.totalPrice).toFixed(2)}€ (statt 50€+ für leeren Linienbus)
+                        Gemeinde zahlt ca. ${(price.normalTaxiPrice - price.totalPrice).toFixed(2)}€ pro Fahrt<br>
+                        (statt 50€+ für leeren Linienbus)
                     </div>
 
                     <!-- Buchen Button -->
